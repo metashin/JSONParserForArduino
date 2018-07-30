@@ -1,13 +1,29 @@
 String findValueWithKey(String message, String key);
 String removeDoublequotes(String message);
+void jsonArrayToCopy(String * dst, String arrayMsg);
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(115200);
 }
-
 void loop() {
   // put your main code here, to run repeatedly:
 
+}
+void jsonArrayToCopy(String * dst, String arrayMsg){
+  const char divider = ',';
+  String trimMsg = arrayMsg;
+  trimMsg.trim();
+  String remindMsg =trimMsg.substring(1,trimMsg.length()-1);
+  int substratingPoint = -1;
+  int loopCnt =0;
+  while((substratingPoint = remindMsg.indexOf(divider)) != -1){
+    dst[loopCnt] = remindMsg.substring(0,substratingPoint);
+    dst[loopCnt].trim();
+    remindMsg = remindMsg.substring(substratingPoint+1);
+    remindMsg.trim();
+    loopCnt++;
+  }
+  dst[loopCnt] = remindMsg;
 }
 String findValueWithKey(String message, String key){
   const char startArray = '[';
@@ -100,6 +116,7 @@ String findValueWithKey(String message, String key){
   Serial.println();
   return returnStr;
 }
+
 String removeDoublequotes(String message){
   char * ptr = (char *)message.c_str();
   int endPtr = 0;
